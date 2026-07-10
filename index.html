@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@whyyhe</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(145deg, #0d0d0d, #1a1a2e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 36px;
+            padding: 40px 30px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            box-shadow: 0 8px 30px rgba(247, 151, 30, 0.3);
+        }
+        h1 {
+            font-size: 28px;
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        .bio {
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 16px 0 24px;
+            color: #b0b0c0;
+            opacity: 0.9;
+        }
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .links a {
+            display: block;
+            padding: 14px 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: 0.25s ease;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .links a.telegram {
+            background: #0088cc;
+            color: white;
+        }
+        .links a.telegram:hover {
+            background: #006699;
+            transform: scale(1.02);
+        }
+        .links a.instagram {
+            background: #d62976;
+            color: white;
+        }
+        .links a.instagram:hover {
+            background: #b01b5a;
+            transform: scale(1.02);
+        }
+        .links a.website {
+            background: #f7971e;
+            color: #1a1a2e;
+        }
+        .links a.website:hover {
+            background: #ffd200;
+            transform: scale(1.02);
+        }
+        .footer {
+            margin-top: 32px;
+            font-size: 13px;
+            color: #5a5a70;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="avatar">👑</div>
+        <h1>@whyyhe</h1>
+        <div class="bio">
+            Why him? I don't know — he's obviously worse.<br>
+            One life. One shot. One name you won't forget.
+        </div>
+        <div class="links">
+            <a href="https://t.me/whyyhe" class="telegram" target="_blank">📩 Telegram</a>
+            <a href="https://www.instagram.com/oh.whyyhe" class="instagram" target="_blank">📸 Instagram</a>
+            <a href="https://guns.lol/whyyhe" class="website" target="_blank">🌐 Сайт</a>
+        </div>
+        <div class="footer">© 2026 @whyyhe</div>
+    </div>
+</body>
+</html>
