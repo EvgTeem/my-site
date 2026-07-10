@@ -266,7 +266,7 @@
 
         <div class="content" id="contentArea"><p>Выберите раздел ниже 👇</p></div>
 
-        <!-- ПЛЕЕР С ЕВРОВИЖИОНОМ -->
+        <!-- ПЛЕЕР -->
         <div class="player-container">
             <div class="player-current-track">
                 <span>🎵</span> EUROVISION · DATA404 · ARLEKIN 40 000
@@ -282,7 +282,7 @@
             ></iframe>
         </div>
 
-        <!-- НАВИГАЦИЯ (5 ВКЛАДОК) -->
+        <!-- 5 ВКЛАДОК -->
         <div class="tabs">
             <button class="tab-btn" data-tab="about"><span class="icon">ℹ️</span><span class="label">О боте</span></button>
             <button class="tab-btn" data-tab="bio"><span class="icon">🔗</span><span class="label">Био</span></button>
@@ -294,7 +294,9 @@
     </div>
 
     <script>
-        // === Telegram WebApp ===
+        // ============================================
+        // 1. Telegram WebApp — перехватываем данные
+        // ============================================
         const tg = window.Telegram?.WebApp || {
             initDataUnsafe: { user: { id: 0, first_name: 'Гость', username: 'guest' } },
             close: () => {},
@@ -305,40 +307,65 @@
         tg.ready();
         tg.expand();
 
-        // === ПОЛУЧАЕМ ДАННЫЕ ПОЛЬЗОВАТЕЛЯ (ИСПРАВЛЕНО!) ===
-        let user = { id: 0, first_name: 'Гость', username: 'guest' };
+        // ============================================
+        // 2. ПОЛУЧАЕМ ID (ДАЖЕ ЕСЛИ ПРИЛОЖЕНИЕ НЕ ПЕРЕДАЛО)
+        // ============================================
+        let userId = 0;
+        let userName = 'Гость';
+        let userUsername = 'guest';
+        let isAdmin = false;
+
+        // Пытаемся взять из initDataUnsafe (это стандартный способ)
         try {
-            // Принудительно запрашиваем данные пользователя
-            tg.expand();
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                user = tg.initDataUnsafe.user;
+                const u = tg.initDataUnsafe.user;
+                userId = u.id || 0;
+                userName = u.first_name || 'Гость';
+                userUsername = u.username || 'guest';
             }
         } catch (e) {
-            console.warn('Не удалось получить данные пользователя:', e);
+            console.warn('Не удалось получить данные из initDataUnsafe:', e);
         }
 
-        const userId = user.id || 0;
-        const userName = user.first_name || 'Гость';
-        const userUsername = user.username || 'guest';
-        const isAdmin = (userId === 1107351961);
-
-        // === Элементы ===
-        document.getElementById('userName').textContent = `@${userUsername}`;
-        const badgeEl = document.getElementById('userBadge');
-        if (isAdmin) {
-            badgeEl.textContent = '👑 Администратор';
-            badgeEl.classList.add('admin');
+        // Если ID = 0, значит Telegram не передал данные.
+        // Тогда мы их запросим у бота через WebApp.sendData()
+        if (userId === 0) {
+            console.log('Данные пользователя не получены, запрашиваем у бота...');
+            // Отправляем запрос боту на получение ID
+            tg.sendData(JSON.stringify({ type: 'get_user_id' }));
+            // Бот должен ответить через web_app_data
+            // Но чтобы не ждать, показываем заглушку
+            document.getElementById('userName').textContent = 'Загрузка...';
         } else {
-            badgeEl.textContent = 'Пользователь';
+            // Если данные есть — сразу отображаем
+            document.getElementById('userName').textContent = `@${userUsername}`;
+            isAdmin = (userId === 1107351961);
+            const badgeEl = document.getElementById('userBadge');
+            if (isAdmin) {
+                badgeEl.textContent = '👑 Администратор';
+                badgeEl.classList.add('admin');
+            } else {
+                badgeEl.textContent = 'Пользователь';
+            }
         }
 
-        // === Аватар ===
+        // ============================================
+        // 3. Обработка ответа от бота
+        // ============================================
+        // Бот может прислать данные через web_app_data
+        // Мы их обработаем здесь, если они придут
+        // Для этого нужно, чтобы бот отправлял их через sendData
+        // Но пока мы просто оставим возможность обновить данные
+
+        // ============================================
+        // 4. Аватар
+        // ============================================
         const avatarContainer = document.getElementById('avatarContainer');
         function loadAvatar() {
             try {
-                if (user.photo_url) {
+                if (tg.initDataUnsafe?.user?.photo_url) {
                     const img = document.createElement('img');
-                    img.src = user.photo_url;
+                    img.src = tg.initDataUnsafe.user.photo_url;
                     img.alt = 'avatar';
                     img.onerror = function() {
                         avatarContainer.innerHTML = '<span style="font-size:32px;">👤</span>';
@@ -348,11 +375,13 @@
                     return;
                 }
             } catch (e) {}
-            avatarContainer.innerHTML = `<span style="font-size:32px;">${isAdmin ? '👑' : '👤'}</span>`;
+            avatarContainer.innerHTML = `<span style="font-size:32px;">${isAdmin ? '👑' : '💎'}</span>`;
         }
         loadAvatar();
 
-        // === Частицы ===
+        // ============================================
+        // 5. Частицы (фон)
+        // ============================================
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
@@ -405,7 +434,9 @@
         }
         drawParticles();
 
-        // === Поддержка ===
+        // ============================================
+        // 6. Поддержка
+        // ============================================
         function sendSupportMessage(text) {
             const statusEl = document.getElementById('supportStatus');
             if (statusEl) {
@@ -434,7 +465,9 @@
             }
         }
 
-        // === Контент вкладок ===
+        // ============================================
+        // 7. Контент вкладок
+        // ============================================
         const contentMap = {
             about: `<p>🤖 Бот создан <strong>@whyyhe</strong>.<br><br>Управление сообществом, статистика, поддержка.</p>`,
             bio: `
@@ -502,12 +535,19 @@
         });
         switchTab('about');
 
+        // ============================================
+        // 8. Если данные пришли от бота (web_app_data)
+        // ============================================
+        // Здесь можно будет обработать ответ от бота, если он пришлёт данные
+        // Например, если бот отправит { type: 'user_data', id: 123, username: '...' }
+        // Но для этого нужен обработчик в боте
+
         window.addEventListener('beforeunload', () => {
             tg.close();
         });
 
         console.log('✅ Сайт с плеером и VIP-вкладкой загружен!');
-        console.log('👤 Пользователь:', user);
+        console.log('👤 Пользователь:', { id: userId, name: userName, username: userUsername });
         console.log('👑 Админ:', isAdmin);
     </script>
 </body>
