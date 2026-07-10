@@ -23,7 +23,6 @@
             position: relative;
             overflow: hidden;
         }
-        /* Живой фон с частицами */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -203,7 +202,6 @@
         .support-status.error {
             color: #f44336;
         }
-        /* Горизонтальные кнопки внизу */
         .tabs {
             display: flex;
             flex-direction: row;
@@ -267,7 +265,6 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Музыкальный плеер */
         .music-control {
             position: absolute;
             top: 12px;
@@ -302,11 +299,9 @@
     </style>
 </head>
 <body>
-    <!-- Холст для частиц -->
     <canvas id="particles-canvas"></canvas>
 
     <div class="card" id="app">
-        <!-- Музыкальный плеер -->
         <div class="music-control" id="musicToggle">
             <span class="icon">🔊</span>
             <span class="status" id="musicStatus">вкл</span>
@@ -341,10 +336,9 @@
         <div class="footer"><span>© 2026</span></div>
     </div>
 
-    <!-- Аудио для фоновой музыки -->
+    <!-- Аудио с твоей музыкой (замени ссылку, если надо) -->
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        <!-- Если не загрузится — тишина -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -440,7 +434,6 @@
                 ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
                 ctx.fill();
             });
-            // Соединяем близкие частицы
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
@@ -461,14 +454,13 @@
         drawParticles();
 
         // ============================================
-        // 4. Фоновая музыка
+        // 4. Фоновая музыка (с твоим треком)
         // ============================================
         const audio = document.getElementById('bgMusic');
         let isMusicPlaying = false;
         const musicToggle = document.getElementById('musicToggle');
         const musicStatus = document.getElementById('musicStatus');
 
-        // Пытаемся запустить музыку при первом касании
         function toggleMusic() {
             if (isMusicPlaying) {
                 audio.pause();
@@ -481,7 +473,6 @@
                     musicStatus.textContent = 'вкл';
                     musicToggle.querySelector('.icon').textContent = '🔊';
                 }).catch(() => {
-                    // Автозапуск заблокирован — ничего страшного
                     musicStatus.textContent = '⛔';
                 });
             }
@@ -489,7 +480,6 @@
 
         musicToggle.addEventListener('click', toggleMusic);
 
-        // Пытаемся запустить музыку при первом клике по странице
         document.addEventListener('click', function firstClick() {
             if (!isMusicPlaying) {
                 audio.play().then(() => {
@@ -552,7 +542,7 @@
                     <a href="https://t.me/w3hand" target="_blank">📢 Telegram <span class="label">канал</span></a>
                     <a href="https://www.instagram.com/oh.whyyhe" target="_blank">📸 Instagram</a>
                     <a href="https://www.tiktok.com/@oh.whyyhe" target="_blank">🎵 TikTok</a>
-                    <a href="https://guns.lol/whyyhe" target="_blank">🌐 Сайт</a>
+                    <a href="https://evgteem.github.io/my-site/" target="_blank">🌐 Сайт</a>
                 </div>
             `,
             profile: `
@@ -595,7 +585,6 @@
             const content = contentMap[tab] || '<p>Раздел в разработке</p>';
             contentEl.innerHTML = content;
 
-            // Подсветка кнопки
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.tab === tab);
             });
@@ -627,17 +616,13 @@
             });
         });
 
-        // Открываем вкладку "О боте" по умолчанию
         switchTab('about');
 
-        // ============================================
-        // 8. Закрытие приложения
-        // ============================================
         window.addEventListener('beforeunload', () => {
             tg.close();
         });
 
-        console.log('✅ Мини-приложение загружено!');
+        console.log('✅ Мини-приложение обновлено!');
         console.log('👤 Пользователь:', user);
         console.log('👑 Админ:', isAdmin);
     </script>
