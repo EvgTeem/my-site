@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@whyyhe</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Подключаем шрифт Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Подключаем Telegram WebApp SDK для общения с ботом -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
@@ -12,95 +15,373 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0e0e0e;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Эффектный фон с градиентом и мерцанием */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, #1a1a2e 0%, #0e0e0e 70%);
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 20%, #1a1a2e 0%, transparent 50%);
+            z-index: 0;
+            opacity: 0.6;
         }
         .card {
-            background: #1a1a1a;
-            border-radius: 32px;
-            padding: 48px 32px;
-            max-width: 380px;
+            position: relative;
+            z-index: 1;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
+            padding: 40px 28px 32px;
+            max-width: 400px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9);
-            border: 1px solid #282828;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            transition: all 0.3s ease;
         }
+        /* Аватарка из Telegram (если не загрузится — запасной вариант) */
         .avatar {
-            width: 110px;
-            height: 110px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            background: #111;
-            margin: 0 auto 24px;
+            margin: 0 auto 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            background: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
-            border: 1px solid #333;
-            color: #aaa;
+            font-size: 40px;
+            color: #555;
         }
-        h1 {
-            font-size: 26px;
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 11px;
             font-weight: 500;
-            color: #eee;
-            letter-spacing: 2px;
-            margin-bottom: 6px;
+            color: #888;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
         }
-        .bio {
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 10px 0 32px;
-            color: #666;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+        .badge.admin {
+            background: rgba(255, 215, 0, 0.08);
+            border-color: rgba(255, 215, 0, 0.15);
+            color: #f0c040;
         }
-        .links {
+        .tabs {
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-top: 8px;
         }
-        .links a {
-            display: block;
-            padding: 15px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 400;
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 16px 20px;
+            color: #ccc;
             font-size: 15px;
-            letter-spacing: 0.5px;
-            transition: 0.25s ease;
-            background: #222;
-            color: #bbb;
-            border: 1px solid #2a2a2a;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .links a:hover {
-            background: #2a2a2a;
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
             color: #fff;
-            border-color: #444;
+        }
+        .tab-btn .icon {
+            font-size: 20px;
+            width: 30px;
+            text-align: center;
+            opacity: 0.6;
+        }
+        .content {
+            margin: 20px 0 8px;
+            padding: 0 4px;
+            min-height: 100px;
+            text-align: left;
+        }
+        .content p {
+            color: #999;
+            font-size: 14px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        .content a {
+            color: #ccc;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: 0.2s;
+        }
+        .content a:hover {
+            color: #fff;
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+        .content .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .content .social-links a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 14px;
+            color: #aaa;
+            border-bottom: none;
+        }
+        .content .social-links a:hover {
+            color: #fff;
+        }
+        .content .social-links .label {
+            opacity: 0.4;
+            font-size: 12px;
+            margin-left: auto;
+        }
+        .hidden {
+            display: none;
         }
         .footer {
-            margin-top: 32px;
+            margin-top: 24px;
             font-size: 11px;
             color: #2a2a2a;
             letter-spacing: 1px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            padding-top: 16px;
+        }
+        .footer span {
+            color: #333;
+        }
+        /* Стили для статистики */
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: #aaa;
+            font-size: 14px;
+        }
+        .stat-item .stat-label {
+            color: #666;
+        }
+        .stat-item .stat-value {
+            color: #ddd;
+            font-weight: 500;
+        }
+        /* Анимация появления контента */
+        .content {
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="avatar">💎</div>
-        <h1>@whyyhe</h1>
-        <div class="bio">one life<br>one shot</div>
-        <div class="links">
-            <a href="https://t.me/whyyhe" target="_blank">Telegram</a>
-            <a href="https://www.instagram.com/oh.whyyhe" target="_blank">Instagram</a>
-            <a href="https://guns.lol/whyyhe" target="_blank">Website</a>
+    <div class="card" id="app">
+        <!-- Аватарка -->
+        <div class="avatar" id="avatarContainer">
+            <span id="avatarPlaceholder">💎</span>
         </div>
-        <div class="footer">© 2026</div>
+
+        <!-- Имя -->
+        <div class="name" id="userName">@whyyhe</div>
+
+        <!-- Бейдж (админ/пользователь) -->
+        <div class="badge" id="userBadge">Пользователь</div>
+
+        <!-- Контент (меняется при нажатии кнопок) -->
+        <div class="content" id="contentArea">
+            <p>Выберите раздел ниже 👇</p>
+        </div>
+
+        <!-- 3 кнопки -->
+        <div class="tabs">
+            <button class="tab-btn" data-tab="about">
+                <span class="icon">ℹ️</span> О боте
+            </button>
+            <button class="tab-btn" data-tab="bio">
+                <span class="icon">🔗</span> Био
+            </button>
+            <button class="tab-btn" data-tab="profile">
+                <span class="icon">👤</span> Мой профиль
+            </button>
+        </div>
+
+        <div class="footer"><span>© 2026</span></div>
     </div>
+
+    <script>
+        // === Telegram WebApp ===
+        const tg = window.Telegram?.WebApp || {
+            initDataUnsafe: { user: { id: 0, first_name: 'Гость', username: 'guest' } },
+            close: () => {},
+            ready: () => {},
+            expand: () => {},
+        };
+        tg.ready();
+        tg.expand();
+
+        // === Данные пользователя из Telegram ===
+        const user = tg.initDataUnsafe?.user || { id: 0, first_name: 'Гость', username: 'guest' };
+        const userId = user.id;
+        const userName = user.first_name || 'Гость';
+        const userUsername = user.username || 'guest';
+        const isAdmin = (userId === 1107351961); // Твой ID
+
+        // === Элементы ===
+        const nameEl = document.getElementById('userName');
+        const badgeEl = document.getElementById('userBadge');
+        const contentEl = document.getElementById('contentArea');
+        const avatarContainer = document.getElementById('avatarContainer');
+        const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+
+        // === Устанавливаем имя ===
+        nameEl.textContent = `@${userUsername}`;
+
+        // === Устанавливаем бейдж ===
+        if (isAdmin) {
+            badgeEl.textContent = '👑 Администратор';
+            badgeEl.classList.add('admin');
+        } else {
+            badgeEl.textContent = 'Пользователь';
+        }
+
+        // === Загружаем аватарку из Telegram ===
+        function loadAvatar() {
+            if (user.photo_url) {
+                // Если есть фото (только если пользователь загрузил его в Telegram)
+                const img = document.createElement('img');
+                img.src = user.photo_url;
+                img.alt = 'avatar';
+                avatarContainer.innerHTML = '';
+                avatarContainer.appendChild(img);
+                return;
+            }
+
+            // Если нет фото — ставим иконку
+            if (isAdmin) {
+                avatarPlaceholder.textContent = '👑';
+            } else {
+                avatarPlaceholder.textContent = '👤';
+            }
+            avatarContainer.innerHTML = '';
+            avatarContainer.appendChild(avatarPlaceholder);
+        }
+        loadAvatar();
+
+        // === Контент для вкладок ===
+        const contentMap = {
+            about: `
+                <p>
+                    🤖 Привет! Это бот, созданный <strong>@whyyhe</strong>.
+                    <br><br>
+                    Он помогает управлять сообществом, собирать статистику и поддерживать связь.
+                </p>
+            `,
+            bio: `
+                <div class="social-links">
+                    <a href="https://t.me/whyyhe" target="_blank">📩 Telegram <span class="label">личный</span></a>
+                    <a href="https://t.me/w3hand" target="_blank">📢 Telegram <span class="label">канал</span></a>
+                    <a href="https://www.instagram.com/oh.whyyhe" target="_blank">📸 Instagram</a>
+                    <a href="https://www.tiktok.com/@whyyhe" target="_blank">🎵 TikTok</a>
+                    <a href="https://guns.lol/whyyhe" target="_blank">🌐 Сайт</a>
+                </div>
+            `,
+            profile: `
+                <div style="margin-top: 4px;">
+                    <div class="stat-item">
+                        <span class="stat-label">👤 Имя</span>
+                        <span class="stat-value">${userName}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🆔 ID</span>
+                        <span class="stat-value">${userId}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">📛 Юзернейм</span>
+                        <span class="stat-value">@${userUsername}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">📅 Дата регистрации</span>
+                        <span class="stat-value">${new Date().toLocaleDateString()}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">📊 Статус</span>
+                        <span class="stat-value">${isAdmin ? '👑 Администратор' : 'Пользователь'}</span>
+                    </div>
+                </div>
+            `
+        };
+
+        // === Переключение вкладок ===
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tab = this.dataset.tab;
+                const content = contentMap[tab] || '<p>Раздел в разработке</p>';
+                contentEl.innerHTML = content;
+            });
+        });
+
+        // === Открываем вкладку "О боте" по умолчанию ===
+        document.querySelector('.tab-btn[data-tab="about"]').click();
+
+        // === Если пользователь закрыл приложение — уведомляем бота ===
+        window.addEventListener('beforeunload', () => {
+            tg.close();
+        });
+
+        console.log('✅ Мини-приложение загружено!');
+        console.log('👤 Пользователь:', user);
+        console.log('👑 Админ:', isAdmin);
+    </script>
 </body>
 </html>
