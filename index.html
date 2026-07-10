@@ -251,89 +251,9 @@
             padding: 0 10px;
         }
         .player-current-track span { color: #888; }
-        .player-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin: 6px 0 4px;
-        }
-        .player-btn {
-            background: none;
-            border: none;
-            color: #888;
-            font-size: 22px;
-            cursor: pointer;
-            transition: 0.2s;
-            padding: 4px 8px;
-            border-radius: 10px;
-        }
-        .player-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
-        .player-btn.play-btn {
-            font-size: 30px;
-            width: 44px; height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.06);
-            border-radius: 50%;
-        }
-        .player-btn.play-btn:hover { background: rgba(255,255,255,0.1); }
-        .player-volume {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 6px;
-        }
-        .player-volume input[type="range"] {
-            width: 100%;
-            height: 3px;
-            -webkit-appearance: none;
-            background: #333;
-            border-radius: 2px;
-            outline: none;
-        }
-        .player-volume input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 12px;
-            height: 12px;
-            background: #888;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .player-volume input[type="range"]::-webkit-slider-thumb:hover { background: #ccc; }
-        .player-volume .vol-icon {
-            font-size: 14px;
-            color: #666;
-            width: 20px;
-            text-align: center;
-        }
-        .player-progress {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 6px;
-        }
-        .player-progress input[type="range"] {
-            flex: 1;
-            height: 3px;
-            -webkit-appearance: none;
-            background: #333;
-            border-radius: 2px;
-            outline: none;
-        }
-        .player-progress input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 10px;
-            height: 10px;
-            background: #888;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .player-progress .time {
-            font-size: 10px;
-            color: #555;
-            min-width: 32px;
+        /* Кнопки плеера скрыты, так как не нужны */
+        .player-controls, .player-btn, .play-btn, .player-volume, .player-progress {
+            display: none;
         }
     </style>
 </head>
@@ -347,25 +267,20 @@
 
         <div class="content" id="contentArea"><p>Выберите раздел ниже 👇</p></div>
 
-        <!-- ПЛЕЕР С ЕВРОВИЖИОНОМ -->
+        <!-- ПЛЕЕР С ЕВРОВИЖИОНОМ (КНОПКИ УБРАНЫ) -->
         <div class="player-container">
             <div class="player-current-track">
                 <span>🎵</span> EUROVISION · DATA404 · ARLEKIN 40 000
             </div>
             <iframe 
                 width="100%" 
-                height="150" 
+                height="120" 
                 scrolling="no" 
                 frameborder="no" 
                 allow="autoplay; encrypted-media" 
                 src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2038944788&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
                 style="border-radius: 16px; background: #1a1a1a; border: 1px solid #2a2a2a;"
             ></iframe>
-            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 8px; color: #444; font-size: 12px;">
-                <span>⏮</span>
-                <span style="color: #888;">▶️</span>
-                <span>⏭</span>
-            </div>
         </div>
 
         <!-- НАВИГАЦИЯ (5 ВКЛАДОК) -->
@@ -391,13 +306,22 @@
         tg.ready();
         tg.expand();
 
-        const user = tg.initDataUnsafe?.user || { id: 0, first_name: 'Гость', username: 'guest' };
-        const userId = user.id;
+        // Безопасное получение данных пользователя
+        let user = { id: 0, first_name: 'Гость', username: 'guest' };
+        try {
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                user = tg.initDataUnsafe.user;
+            }
+        } catch (e) {
+            console.warn('Не удалось получить данные пользователя:', e);
+        }
+
+        const userId = user.id || 0;
         const userName = user.first_name || 'Гость';
         const userUsername = user.username || 'guest';
         const isAdmin = (userId === 1107351961);
 
-        // === Аватар и имя ===
+        // === Элементы ===
         document.getElementById('userName').textContent = `@${userUsername}`;
         const badgeEl = document.getElementById('userBadge');
         if (isAdmin) {
@@ -407,7 +331,41 @@
             badgeEl.textContent = 'Пользователь';
         }
 
-        // === Частицы ===
+        // === Аватар (безопасная загрузка) ===
+        const avatarContainer = document.getElementById('avatarContainer');
+        const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+
+        function loadAvatar() {
+            try {
+                if (user.photo_url) {
+                    const img = document.createElement('img');
+                    img.src = user.photo_url;
+                    img.alt = 'avatar';
+                    img.onerror = function() {
+                        // Если фото не загрузилось, показываем иконку
+                        avatarContainer.innerHTML = '';
+                        const span = document.createElement('span');
+                        span.id = 'avatarPlaceholder';
+                        span.textContent = isAdmin ? '👑' : '👤';
+                        avatarContainer.appendChild(span);
+                    };
+                    avatarContainer.innerHTML = '';
+                    avatarContainer.appendChild(img);
+                    return;
+                }
+            } catch (e) {
+                console.warn('Ошибка загрузки аватара:', e);
+            }
+            // Запасной вариант
+            avatarContainer.innerHTML = '';
+            const span = document.createElement('span');
+            span.id = 'avatarPlaceholder';
+            span.textContent = isAdmin ? '👑' : '👤';
+            avatarContainer.appendChild(span);
+        }
+        loadAvatar();
+
+        // === Частицы (фон) ===
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
