@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@whyyhe</title>
-    <!-- Подключаем шрифт Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Подключаем Telegram WebApp SDK для общения с ботом -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -25,27 +23,15 @@
             position: relative;
             overflow: hidden;
         }
-        /* Эффектный фон с градиентом и мерцанием */
-        body::before {
-            content: '';
+        /* Живой фон с частицами */
+        #particles-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at 20% 50%, #1a1a2e 0%, #0e0e0e 70%);
             z-index: 0;
-        }
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 80% 20%, #1a1a2e 0%, transparent 50%);
-            z-index: 0;
-            opacity: 0.6;
+            pointer-events: none;
         }
         .card {
             position: relative;
@@ -54,27 +40,25 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: 40px;
-            padding: 40px 28px 32px;
+            padding: 32px 24px 24px;
             max-width: 400px;
             width: 100%;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
-            transition: all 0.3s ease;
         }
-        /* Аватарка из Telegram (если не загрузится — запасной вариант) */
         .avatar {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin: 0 auto 16px;
+            margin: 0 auto 12px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
             background: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 32px;
             color: #555;
         }
         .avatar img {
@@ -84,71 +68,38 @@
             display: block;
         }
         .name {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #fff;
             letter-spacing: 1px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 11px;
+            padding: 2px 12px;
+            font-size: 10px;
             font-weight: 500;
             color: #888;
             letter-spacing: 0.5px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .badge.admin {
             background: rgba(255, 215, 0, 0.08);
             border-color: rgba(255, 215, 0, 0.15);
             color: #f0c040;
         }
-        .tabs {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .tab-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 16px 20px;
-            color: #ccc;
-            font-size: 15px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #fff;
-        }
-        .tab-btn .icon {
-            font-size: 20px;
-            width: 30px;
-            text-align: center;
-            opacity: 0.6;
-        }
         .content {
-            margin: 20px 0 8px;
-            padding: 0 4px;
-            min-height: 100px;
+            margin: 12px 0 16px;
+            padding: 0 2px;
+            min-height: 80px;
             text-align: left;
         }
         .content p {
             color: #999;
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.6;
             font-weight: 300;
         }
@@ -162,51 +113,36 @@
             color: #fff;
             border-bottom-color: rgba(255,255,255,0.3);
         }
-        .content .social-links {
+        .social-links {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-top: 6px;
+            gap: 6px;
+            margin-top: 4px;
         }
-        .content .social-links a {
+        .social-links a {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 0;
-            font-size: 14px;
+            padding: 6px 0;
+            font-size: 13px;
             color: #aaa;
             border-bottom: none;
         }
-        .content .social-links a:hover {
+        .social-links a:hover {
             color: #fff;
         }
-        .content .social-links .label {
+        .social-links .label {
             opacity: 0.4;
-            font-size: 12px;
+            font-size: 11px;
             margin-left: auto;
         }
-        .hidden {
-            display: none;
-        }
-        .footer {
-            margin-top: 24px;
-            font-size: 11px;
-            color: #2a2a2a;
-            letter-spacing: 1px;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            padding-top: 16px;
-        }
-        .footer span {
-            color: #333;
-        }
-        /* Стили для статистики */
         .stat-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid rgba(255,255,255,0.04);
             color: #aaa;
-            font-size: 14px;
+            font-size: 13px;
         }
         .stat-item .stat-label {
             color: #666;
@@ -215,7 +151,115 @@
             color: #ddd;
             font-weight: 500;
         }
-        /* Анимация появления контента */
+        .support-form textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: #eee;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            min-height: 60px;
+            outline: none;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+        .support-form textarea:focus {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+        }
+        .support-form textarea::placeholder {
+            color: #555;
+        }
+        .support-form .send-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .support-form .send-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .support-status {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        .support-status.success {
+            color: #4caf50;
+        }
+        .support-status.error {
+            color: #f44336;
+        }
+        /* Горизонтальные кнопки внизу */
+        .tabs {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .tab-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 10px 4px;
+            color: #888;
+            font-size: 11px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            min-width: 0;
+        }
+        .tab-btn .icon {
+            font-size: 18px;
+            opacity: 0.6;
+        }
+        .tab-btn .label {
+            font-size: 9px;
+            opacity: 0.7;
+            letter-spacing: 0.3px;
+        }
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .footer {
+            margin-top: 16px;
+            font-size: 9px;
+            color: #2a2a2a;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            padding-top: 12px;
+        }
+        .footer span {
+            color: #333;
+        }
         .content {
             animation: fadeIn 0.3s ease;
         }
@@ -223,71 +267,117 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Музыкальный плеер */
+        .music-control {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 4px 12px 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 5;
+            color: #888;
+            font-size: 12px;
+        }
+        .music-control:hover {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+        }
+        .music-control .icon {
+            font-size: 16px;
+        }
+        .music-control .status {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
+    <!-- Холст для частиц -->
+    <canvas id="particles-canvas"></canvas>
+
     <div class="card" id="app">
-        <!-- Аватарка -->
+        <!-- Музыкальный плеер -->
+        <div class="music-control" id="musicToggle">
+            <span class="icon">🔊</span>
+            <span class="status" id="musicStatus">вкл</span>
+        </div>
+
         <div class="avatar" id="avatarContainer">
             <span id="avatarPlaceholder">💎</span>
         </div>
-
-        <!-- Имя -->
         <div class="name" id="userName">@whyyhe</div>
-
-        <!-- Бейдж (админ/пользователь) -->
         <div class="badge" id="userBadge">Пользователь</div>
-
-        <!-- Контент (меняется при нажатии кнопок) -->
         <div class="content" id="contentArea">
             <p>Выберите раздел ниже 👇</p>
         </div>
-
-        <!-- 3 кнопки -->
         <div class="tabs">
             <button class="tab-btn" data-tab="about">
-                <span class="icon">ℹ️</span> О боте
+                <span class="icon">ℹ️</span>
+                <span class="label">О боте</span>
             </button>
             <button class="tab-btn" data-tab="bio">
-                <span class="icon">🔗</span> Био
+                <span class="icon">🔗</span>
+                <span class="label">Био</span>
             </button>
             <button class="tab-btn" data-tab="profile">
-                <span class="icon">👤</span> Мой профиль
+                <span class="icon">👤</span>
+                <span class="label">Профиль</span>
+            </button>
+            <button class="tab-btn" data-tab="support">
+                <span class="icon">🆘</span>
+                <span class="label">Поддержка</span>
             </button>
         </div>
-
         <div class="footer"><span>© 2026</span></div>
     </div>
 
+    <!-- Аудио для фоновой музыки -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <!-- Если не загрузится — тишина -->
+    </audio>
+
     <script>
-        // === Telegram WebApp ===
+        // ============================================
+        // 1. Telegram WebApp
+        // ============================================
         const tg = window.Telegram?.WebApp || {
             initDataUnsafe: { user: { id: 0, first_name: 'Гость', username: 'guest' } },
             close: () => {},
             ready: () => {},
             expand: () => {},
+            sendData: (data) => console.log('Telegram WebApp sendData:', data),
         };
         tg.ready();
         tg.expand();
 
-        // === Данные пользователя из Telegram ===
         const user = tg.initDataUnsafe?.user || { id: 0, first_name: 'Гость', username: 'guest' };
         const userId = user.id;
         const userName = user.first_name || 'Гость';
         const userUsername = user.username || 'guest';
-        const isAdmin = (userId === 1107351961); // Твой ID
+        const isAdmin = (userId === 1107351961);
 
-        // === Элементы ===
+        // ============================================
+        // 2. Элементы DOM
+        // ============================================
         const nameEl = document.getElementById('userName');
         const badgeEl = document.getElementById('userBadge');
         const contentEl = document.getElementById('contentArea');
         const avatarContainer = document.getElementById('avatarContainer');
         const avatarPlaceholder = document.getElementById('avatarPlaceholder');
 
-        // === Устанавливаем имя ===
         nameEl.textContent = `@${userUsername}`;
 
-        // === Устанавливаем бейдж ===
         if (isAdmin) {
             badgeEl.textContent = '👑 Администратор';
             badgeEl.classList.add('admin');
@@ -295,10 +385,8 @@
             badgeEl.textContent = 'Пользователь';
         }
 
-        // === Загружаем аватарку из Telegram ===
         function loadAvatar() {
             if (user.photo_url) {
-                // Если есть фото (только если пользователь загрузил его в Telegram)
                 const img = document.createElement('img');
                 img.src = user.photo_url;
                 img.alt = 'avatar';
@@ -306,25 +394,156 @@
                 avatarContainer.appendChild(img);
                 return;
             }
-
-            // Если нет фото — ставим иконку
-            if (isAdmin) {
-                avatarPlaceholder.textContent = '👑';
-            } else {
-                avatarPlaceholder.textContent = '👤';
-            }
+            avatarPlaceholder.textContent = isAdmin ? '👑' : '👤';
             avatarContainer.innerHTML = '';
             avatarContainer.appendChild(avatarPlaceholder);
         }
         loadAvatar();
 
-        // === Контент для вкладок ===
+        // ============================================
+        // 3. Живой фон — частицы
+        // ============================================
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h;
+
+        function resizeCanvas() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particles = [];
+        const PARTICLE_COUNT = 60;
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: Math.random() * 2 + 1,
+                dx: (Math.random() - 0.5) * 0.4,
+                dy: (Math.random() - 0.5) * 0.4,
+                a: Math.random() * 0.4 + 0.1,
+            });
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, w, h);
+            particles.forEach(p => {
+                p.x += p.dx;
+                p.y += p.dy;
+                if (p.x < 0 || p.x > w) p.dx *= -1;
+                if (p.y < 0 || p.y > h) p.dy *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.a})`;
+                ctx.fill();
+            });
+            // Соединяем близкие частицы
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(255,255,255,${0.05 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+
+        // ============================================
+        // 4. Фоновая музыка
+        // ============================================
+        const audio = document.getElementById('bgMusic');
+        let isMusicPlaying = false;
+        const musicToggle = document.getElementById('musicToggle');
+        const musicStatus = document.getElementById('musicStatus');
+
+        // Пытаемся запустить музыку при первом касании
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                audio.pause();
+                isMusicPlaying = false;
+                musicStatus.textContent = 'выкл';
+                musicToggle.querySelector('.icon').textContent = '🔇';
+            } else {
+                audio.play().then(() => {
+                    isMusicPlaying = true;
+                    musicStatus.textContent = 'вкл';
+                    musicToggle.querySelector('.icon').textContent = '🔊';
+                }).catch(() => {
+                    // Автозапуск заблокирован — ничего страшного
+                    musicStatus.textContent = '⛔';
+                });
+            }
+        }
+
+        musicToggle.addEventListener('click', toggleMusic);
+
+        // Пытаемся запустить музыку при первом клике по странице
+        document.addEventListener('click', function firstClick() {
+            if (!isMusicPlaying) {
+                audio.play().then(() => {
+                    isMusicPlaying = true;
+                    musicStatus.textContent = 'вкл';
+                    musicToggle.querySelector('.icon').textContent = '🔊';
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', firstClick);
+        }, { once: true });
+
+        // ============================================
+        // 5. Отправка поддержки
+        // ============================================
+        function sendSupportMessage(text) {
+            const statusEl = document.getElementById('supportStatus');
+            if (statusEl) {
+                statusEl.textContent = '⏳ Отправка...';
+                statusEl.className = 'support-status';
+            }
+
+            const data = {
+                type: 'support',
+                user_id: userId,
+                username: userUsername,
+                first_name: userName,
+                text: text,
+                is_admin: isAdmin,
+            };
+
+            try {
+                tg.sendData(JSON.stringify(data));
+                if (statusEl) {
+                    statusEl.textContent = '✅ Сообщение отправлено! Администратор ответит в ближайшее время.';
+                    statusEl.className = 'support-status success';
+                }
+            } catch (e) {
+                console.error('Ошибка отправки:', e);
+                if (statusEl) {
+                    statusEl.textContent = '❌ Ошибка отправки. Попробуйте позже.';
+                    statusEl.className = 'support-status error';
+                }
+            }
+        }
+
+        // ============================================
+        // 6. Контент вкладок
+        // ============================================
         const contentMap = {
             about: `
                 <p>
-                    🤖 Привет! Это бот, созданный <strong>@whyyhe</strong>.
+                    🤖 Бот создан <strong>@whyyhe</strong>.
                     <br><br>
-                    Он помогает управлять сообществом, собирать статистику и поддерживать связь.
+                    Управление сообществом, статистика, поддержка.
                 </p>
             `,
             bio: `
@@ -359,22 +578,61 @@
                         <span class="stat-value">${isAdmin ? '👑 Администратор' : 'Пользователь'}</span>
                     </div>
                 </div>
+            `,
+            support: `
+                <div class="support-form">
+                    <textarea id="supportText" placeholder="Напишите ваше сообщение..." rows="3"></textarea>
+                    <button class="send-btn" id="supportSendBtn">📩 Отправить</button>
+                    <div id="supportStatus" class="support-status"></div>
+                </div>
             `
         };
 
-        // === Переключение вкладок ===
+        // ============================================
+        // 7. Переключение вкладок
+        // ============================================
+        function switchTab(tab) {
+            const content = contentMap[tab] || '<p>Раздел в разработке</p>';
+            contentEl.innerHTML = content;
+
+            // Подсветка кнопки
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tab);
+            });
+
+            if (tab === 'support') {
+                const sendBtn = document.getElementById('supportSendBtn');
+                const textarea = document.getElementById('supportText');
+                if (sendBtn && textarea) {
+                    sendBtn.addEventListener('click', function() {
+                        const text = textarea.value.trim();
+                        if (text.length === 0) {
+                            const status = document.getElementById('supportStatus');
+                            if (status) {
+                                status.textContent = '❌ Напишите сообщение!';
+                                status.className = 'support-status error';
+                            }
+                            return;
+                        }
+                        sendSupportMessage(text);
+                        textarea.value = '';
+                    });
+                }
+            }
+        }
+
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                const tab = this.dataset.tab;
-                const content = contentMap[tab] || '<p>Раздел в разработке</p>';
-                contentEl.innerHTML = content;
+                switchTab(this.dataset.tab);
             });
         });
 
-        // === Открываем вкладку "О боте" по умолчанию ===
-        document.querySelector('.tab-btn[data-tab="about"]').click();
+        // Открываем вкладку "О боте" по умолчанию
+        switchTab('about');
 
-        // === Если пользователь закрыл приложение — уведомляем бота ===
+        // ============================================
+        // 8. Закрытие приложения
+        // ============================================
         window.addEventListener('beforeunload', () => {
             tg.close();
         });
