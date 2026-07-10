@@ -251,7 +251,6 @@
             padding: 0 10px;
         }
         .player-current-track span { color: #888; }
-        /* Кнопки плеера скрыты, так как не нужны */
         .player-controls, .player-btn, .play-btn, .player-volume, .player-progress {
             display: none;
         }
@@ -267,7 +266,7 @@
 
         <div class="content" id="contentArea"><p>Выберите раздел ниже 👇</p></div>
 
-        <!-- ПЛЕЕР С ЕВРОВИЖИОНОМ (КНОПКИ УБРАНЫ) -->
+        <!-- ПЛЕЕР С ЕВРОВИЖИОНОМ -->
         <div class="player-container">
             <div class="player-current-track">
                 <span>🎵</span> EUROVISION · DATA404 · ARLEKIN 40 000
@@ -306,9 +305,11 @@
         tg.ready();
         tg.expand();
 
-        // Безопасное получение данных пользователя
+        // === ПОЛУЧАЕМ ДАННЫЕ ПОЛЬЗОВАТЕЛЯ (ИСПРАВЛЕНО!) ===
         let user = { id: 0, first_name: 'Гость', username: 'guest' };
         try {
+            // Принудительно запрашиваем данные пользователя
+            tg.expand();
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 user = tg.initDataUnsafe.user;
             }
@@ -331,10 +332,8 @@
             badgeEl.textContent = 'Пользователь';
         }
 
-        // === Аватар (безопасная загрузка) ===
+        // === Аватар ===
         const avatarContainer = document.getElementById('avatarContainer');
-        const avatarPlaceholder = document.getElementById('avatarPlaceholder');
-
         function loadAvatar() {
             try {
                 if (user.photo_url) {
@@ -342,30 +341,18 @@
                     img.src = user.photo_url;
                     img.alt = 'avatar';
                     img.onerror = function() {
-                        // Если фото не загрузилось, показываем иконку
-                        avatarContainer.innerHTML = '';
-                        const span = document.createElement('span');
-                        span.id = 'avatarPlaceholder';
-                        span.textContent = isAdmin ? '👑' : '👤';
-                        avatarContainer.appendChild(span);
+                        avatarContainer.innerHTML = '<span style="font-size:32px;">👤</span>';
                     };
                     avatarContainer.innerHTML = '';
                     avatarContainer.appendChild(img);
                     return;
                 }
-            } catch (e) {
-                console.warn('Ошибка загрузки аватара:', e);
-            }
-            // Запасной вариант
-            avatarContainer.innerHTML = '';
-            const span = document.createElement('span');
-            span.id = 'avatarPlaceholder';
-            span.textContent = isAdmin ? '👑' : '👤';
-            avatarContainer.appendChild(span);
+            } catch (e) {}
+            avatarContainer.innerHTML = `<span style="font-size:32px;">${isAdmin ? '👑' : '👤'}</span>`;
         }
         loadAvatar();
 
-        // === Частицы (фон) ===
+        // === Частицы ===
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
