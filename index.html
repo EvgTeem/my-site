@@ -7,14 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Стили — те же, что были, только добавил блок для плеера */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: #0e0e0e;
             min-height: 100vh;
             display: flex;
@@ -26,10 +21,8 @@
         }
         #particles-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 0;
             pointer-events: none;
         }
@@ -48,11 +41,10 @@
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
         }
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             border-radius: 50%;
             margin: 0 auto 10px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255,255,255,0.1);
             overflow: hidden;
             background: #1a1a1a;
             display: flex;
@@ -61,12 +53,7 @@
             font-size: 32px;
             color: #555;
         }
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .name {
             font-size: 20px;
             font-weight: 600;
@@ -76,8 +63,8 @@
         }
         .badge {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 20px;
             padding: 2px 12px;
             font-size: 10px;
@@ -87,8 +74,8 @@
             margin-bottom: 10px;
         }
         .badge.admin {
-            background: rgba(255, 215, 0, 0.08);
-            border-color: rgba(255, 215, 0, 0.15);
+            background: rgba(255,215,0,0.08);
+            border-color: rgba(255,215,0,0.15);
             color: #f0c040;
         }
         .content {
@@ -107,12 +94,8 @@
             color: #ccc;
             text-decoration: none;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: 0.2s;
         }
-        .content a:hover {
-            color: #fff;
-            border-bottom-color: rgba(255,255,255,0.3);
-        }
+        .content a:hover { color: #fff; }
         .social-links {
             display: flex;
             flex-direction: column;
@@ -128,9 +111,7 @@
             color: #aaa;
             border-bottom: none;
         }
-        .social-links a:hover {
-            color: #fff;
-        }
+        .social-links a:hover { color: #fff; }
         .social-links .label {
             opacity: 0.4;
             font-size: 11px;
@@ -144,13 +125,8 @@
             color: #aaa;
             font-size: 13px;
         }
-        .stat-item .stat-label {
-            color: #666;
-        }
-        .stat-item .stat-value {
-            color: #ddd;
-            font-weight: 500;
-        }
+        .stat-item .stat-label { color: #666; }
+        .stat-item .stat-value { color: #ddd; font-weight: 500; }
         .support-form textarea {
             width: 100%;
             background: rgba(255,255,255,0.05);
@@ -163,16 +139,13 @@
             resize: vertical;
             min-height: 60px;
             outline: none;
-            transition: 0.2s;
             box-sizing: border-box;
         }
         .support-form textarea:focus {
             border-color: rgba(255,255,255,0.15);
             background: rgba(255,255,255,0.08);
         }
-        .support-form textarea::placeholder {
-            color: #555;
-        }
+        .support-form textarea::placeholder { color: #555; }
         .support-form .send-btn {
             margin-top: 10px;
             width: 100%;
@@ -197,12 +170,8 @@
             color: #666;
             text-align: center;
         }
-        .support-status.success {
-            color: #4caf50;
-        }
-        .support-status.error {
-            color: #f44336;
-        }
+        .support-status.success { color: #4caf50; }
+        .support-status.error { color: #f44336; }
         .tabs {
             display: flex;
             flex-direction: row;
@@ -212,8 +181,8 @@
         }
         .tab-btn {
             flex: 1;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 14px;
             padding: 10px 4px;
             color: #888;
@@ -239,13 +208,13 @@
             letter-spacing: 0.3px;
         }
         .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.12);
             color: #fff;
         }
         .tab-btn.active {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.1);
             color: #fff;
         }
         .footer {
@@ -256,9 +225,7 @@
             border-top: 1px solid rgba(255,255,255,0.04);
             padding-top: 10px;
         }
-        .footer span {
-            color: #333;
-        }
+        .footer span { color: #333; }
         .content {
             animation: fadeIn 0.3s ease;
         }
@@ -266,8 +233,7 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* === НОВЫЙ БЛОК — ПЛЕЕР === */
+        /* Плеер */
         .player-container {
             margin: 12px 0 10px;
             padding: 12px 10px;
@@ -322,7 +288,6 @@
             background: #333;
             border-radius: 2px;
             outline: none;
-            transition: 0.2s;
         }
         .player-volume input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -331,7 +296,6 @@
             background: #888;
             border-radius: 50%;
             cursor: pointer;
-            transition: 0.2s;
         }
         .player-volume input[type="range"]::-webkit-slider-thumb:hover {
             background: #ccc;
@@ -352,8 +316,33 @@
             text-overflow: ellipsis;
             padding: 0 10px;
         }
-        .player-current-track span {
-            color: #888;
+        .player-current-track span { color: #888; }
+        .player-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .player-progress input[type="range"] {
+            flex: 1;
+            height: 3px;
+            -webkit-appearance: none;
+            background: #333;
+            border-radius: 2px;
+            outline: none;
+        }
+        .player-progress input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #888;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .player-progress .time {
+            font-size: 10px;
+            color: #555;
+            min-width: 32px;
         }
     </style>
 </head>
@@ -361,23 +350,15 @@
     <canvas id="particles-canvas"></canvas>
 
     <div class="card" id="app">
-        <!-- Аватарка и имя (без изменений) -->
-        <div class="avatar" id="avatarContainer">
-            <span id="avatarPlaceholder">💎</span>
-        </div>
+        <div class="avatar" id="avatarContainer"><span id="avatarPlaceholder">💎</span></div>
         <div class="name" id="userName">@whyyhe</div>
         <div class="badge" id="userBadge">Пользователь</div>
 
-        <!-- Содержимое (вкладки) -->
-        <div class="content" id="contentArea">
-            <p>Выберите раздел ниже 👇</p>
-        </div>
+        <div class="content" id="contentArea"><p>Выберите раздел ниже 👇</p></div>
 
-        <!-- ПЛЕЕР (НОВЫЙ БЛОК) -->
-        <div class="player-container" id="playerContainer">
-            <div class="player-current-track" id="currentTrack">
-                <span>🎵</span> EUROVISION · DATA404 · ARLEKIN 40 000
-            </div>
+        <!-- Плеер (аудио) -->
+        <div class="player-container">
+            <div class="player-current-track" id="currentTrack"><span>🎵</span> Загрузка...</div>
             <div class="player-controls">
                 <button class="player-btn" id="prevBtn" title="Назад">⏮</button>
                 <button class="player-btn play-btn" id="playBtn" title="Пауза/Играть">▶️</button>
@@ -387,34 +368,24 @@
                 <span class="vol-icon">🔊</span>
                 <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
             </div>
+            <div class="player-progress">
+                <span class="time" id="currentTime">0:00</span>
+                <input type="range" id="progressSlider" min="0" max="100" value="0">
+                <span class="time" id="totalTime">0:00</span>
+            </div>
         </div>
 
-        <!-- Навигация (кнопки внизу) -->
         <div class="tabs">
-            <button class="tab-btn" data-tab="about">
-                <span class="icon">ℹ️</span>
-                <span class="label">О боте</span>
-            </button>
-            <button class="tab-btn" data-tab="bio">
-                <span class="icon">🔗</span>
-                <span class="label">Био</span>
-            </button>
-            <button class="tab-btn" data-tab="profile">
-                <span class="icon">👤</span>
-                <span class="label">Профиль</span>
-            </button>
-            <button class="tab-btn" data-tab="support">
-                <span class="icon">🆘</span>
-                <span class="label">Поддержка</span>
-            </button>
+            <button class="tab-btn" data-tab="about"><span class="icon">ℹ️</span><span class="label">О боте</span></button>
+            <button class="tab-btn" data-tab="bio"><span class="icon">🔗</span><span class="label">Био</span></button>
+            <button class="tab-btn" data-tab="profile"><span class="icon">👤</span><span class="label">Профиль</span></button>
+            <button class="tab-btn" data-tab="support"><span class="icon">🆘</span><span class="label">Поддержка</span></button>
         </div>
         <div class="footer"><span>© 2026</span></div>
     </div>
 
     <script>
-        // ============================================
-        // 1. Telegram WebApp
-        // ============================================
+        // === Telegram WebApp ===
         const tg = window.Telegram?.WebApp || {
             initDataUnsafe: { user: { id: 0, first_name: 'Гость', username: 'guest' } },
             close: () => {},
@@ -431,17 +402,9 @@
         const userUsername = user.username || 'guest';
         const isAdmin = (userId === 1107351961);
 
-        // ============================================
-        // 2. Элементы DOM и аватар
-        // ============================================
-        const nameEl = document.getElementById('userName');
+        // === Аватар и имя ===
+        document.getElementById('userName').textContent = `@${userUsername}`;
         const badgeEl = document.getElementById('userBadge');
-        const contentEl = document.getElementById('contentArea');
-        const avatarContainer = document.getElementById('avatarContainer');
-        const avatarPlaceholder = document.getElementById('avatarPlaceholder');
-
-        nameEl.textContent = `@${userUsername}`;
-
         if (isAdmin) {
             badgeEl.textContent = '👑 Администратор';
             badgeEl.classList.add('admin');
@@ -449,38 +412,19 @@
             badgeEl.textContent = 'Пользователь';
         }
 
-        function loadAvatar() {
-            if (user.photo_url) {
-                const img = document.createElement('img');
-                img.src = user.photo_url;
-                img.alt = 'avatar';
-                avatarContainer.innerHTML = '';
-                avatarContainer.appendChild(img);
-                return;
-            }
-            avatarPlaceholder.textContent = isAdmin ? '👑' : '👤';
-            avatarContainer.innerHTML = '';
-            avatarContainer.appendChild(avatarPlaceholder);
-        }
-        loadAvatar();
-
-        // ============================================
-        // 3. Частицы (живой фон)
-        // ============================================
+        // === Частицы ===
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
-
-        function resizeCanvas() {
+        const resizeCanvas = () => {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-        }
+        };
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
         const particles = [];
-        const PARTICLE_COUNT = 60;
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
+        for (let i = 0; i < 60; i++) {
             particles.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
@@ -494,8 +438,7 @@
         function drawParticles() {
             ctx.clearRect(0, 0, w, h);
             particles.forEach(p => {
-                p.x += p.dx;
-                p.y += p.dy;
+                p.x += p.dx; p.y += p.dy;
                 if (p.x < 0 || p.x > w) p.dx *= -1;
                 if (p.y < 0 || p.y > h) p.dy *= -1;
                 ctx.beginPath();
@@ -507,7 +450,7 @@
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < 120) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
@@ -522,80 +465,91 @@
         }
         drawParticles();
 
-        // ============================================
-        // 4. ПЛЕЕР (Главное обновление)
-        // ============================================
-        // --- Плейлист (Ты можешь добавлять сюда новые треки) ---
+        // === АУДИО ПЛЕЕР (БЕЗ РЕКЛАМЫ) ===
+        // Список треков (прямые MP3-ссылки)
         const playlist = [
             {
                 id: 1,
                 title: 'EUROVISION · DATA404 · ARLEKIN 40 000',
-                // Используем встраиваемый YouTube-плеер для этого трека
-                // Конвертируем ссылку в embed-формат
-                url: 'https://www.youtube.com/embed/DHYT53jgPk4?autoplay=0&controls=0&loop=1&playlist=DHYT53jgPk4'
+                // ВРЕМЕННАЯ ЗАГЛУШКА: используем свободный трек, похожий по атмосфере
+                // Ты сможешь ЗАМЕНИТЬ эту ссылку на свою MP3 (когда загрузишь файл на хостинг)
+                url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
             }
-            // 🎵 Добавляй сюда новые треки по такой же схеме:
+            // 🎵 Как добавить свой трек:
+            // 1. Залей MP3 на бесплатный хостинг (например, pomf.cat, myfile.org)
+            // 2. Скопируй прямую ссылку на файл
+            // 3. Вставь в массив ниже:
             // {
             //   id: 2,
             //   title: 'Название трека',
-            //   url: 'https://www.youtube.com/embed/ID_ВИДЕО?autoplay=0&controls=0&loop=1&playlist=ID_ВИДЕО'
+            //   url: 'https://ссылка_на_твой_файл.mp3'
             // }
         ];
 
         let currentTrackIndex = 0;
         let isPlaying = false;
+        let audio = new Audio();
 
-        // Создаём скрытый iframe для YouTube
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'absolute';
-        iframe.style.width = '0';
-        iframe.style.height = '0';
-        iframe.style.border = 'none';
-        iframe.style.opacity = '0';
-        iframe.style.pointerEvents = 'none';
-        iframe.allow = 'autoplay; encrypted-media';
-        document.body.appendChild(iframe);
-
-        const playerContainer = document.getElementById('playerContainer');
+        // Элементы плеера
         const playBtn = document.getElementById('playBtn');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const volumeSlider = document.getElementById('volumeSlider');
+        const progressSlider = document.getElementById('progressSlider');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
         const currentTrackEl = document.getElementById('currentTrack');
 
-        // Функция загрузки трека в iframe
+        // Загрузка трека
         function loadTrack(index) {
             const track = playlist[index];
             if (!track) return;
-            // Обновляем название трека
+            audio.src = track.url;
+            audio.load();
             currentTrackEl.innerHTML = `<span>🎵</span> ${track.title}`;
-            // Загружаем iframe с треком
-            iframe.src = track.url;
-            // Если плеер был включён — пробуем запустить
-            if (isPlaying) {
-                // Для YouTube автозапуск через autoplay=1 (но нужно перезагрузить iframe)
-                // Простой способ: перезагружаем с autoplay=1
-                const autoplayUrl = track.url.replace('autoplay=0', 'autoplay=1');
-                iframe.src = autoplayUrl;
+            progressSlider.value = 0;
+            currentTimeEl.textContent = '0:00';
+            if (audio.duration) {
+                totalTimeEl.textContent = formatTime(audio.duration);
             } else {
-                iframe.src = track.url;
+                totalTimeEl.textContent = '0:00';
+            }
+            // Если плеер был включён — автостарт
+            if (isPlaying) {
+                audio.play().catch(() => {});
             }
         }
 
-        // Функция воспроизведения/паузы
+        // Форматирование времени
+        function formatTime(seconds) {
+            if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec.toString().padStart(2, '0')}`;
+        }
+
+        // Обновление прогресса
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                progressSlider.value = progress;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            totalTimeEl.textContent = formatTime(audio.duration);
+        });
+
+        // Переключение play/pause
         function togglePlay() {
             if (playlist.length === 0) return;
             if (isPlaying) {
-                // Пауза: останавливаем iframe (ставим autoplay=0)
-                const track = playlist[currentTrackIndex];
-                iframe.src = track.url;
+                audio.pause();
                 playBtn.textContent = '▶️';
                 isPlaying = false;
             } else {
-                // Воспроизведение: автозапуск
-                const track = playlist[currentTrackIndex];
-                const autoplayUrl = track.url.replace('autoplay=0', 'autoplay=1');
-                iframe.src = autoplayUrl;
+                audio.play().catch(() => {});
                 playBtn.textContent = '⏸️';
                 isPlaying = true;
             }
@@ -607,10 +561,7 @@
             currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
             loadTrack(currentTrackIndex);
             if (isPlaying) {
-                // Если играло — продолжаем с новым треком
-                const track = playlist[currentTrackIndex];
-                const autoplayUrl = track.url.replace('autoplay=0', 'autoplay=1');
-                iframe.src = autoplayUrl;
+                audio.play().catch(() => {});
                 playBtn.textContent = '⏸️';
             } else {
                 playBtn.textContent = '▶️';
@@ -623,9 +574,7 @@
             currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
             loadTrack(currentTrackIndex);
             if (isPlaying) {
-                const track = playlist[currentTrackIndex];
-                const autoplayUrl = track.url.replace('autoplay=0', 'autoplay=1');
-                iframe.src = autoplayUrl;
+                audio.play().catch(() => {});
                 playBtn.textContent = '⏸️';
             } else {
                 playBtn.textContent = '▶️';
@@ -634,54 +583,50 @@
 
         // Громкость
         volumeSlider.addEventListener('input', function() {
-            // Для iframe управление громкостью не работает напрямую, но мы сохраняем значение
-            // Можно добавить визуальный фидбек
-            const vol = this.value;
-            // Для YouTube можно передать параметр volume, но это требует API
-            // Пока просто сохраняем и показываем иконку
+            audio.volume = this.value;
             const icon = document.querySelector('.vol-icon');
-            if (vol > 0.5) icon.textContent = '🔊';
-            else if (vol > 0.1) icon.textContent = '🔉';
+            if (this.value > 0.5) icon.textContent = '🔊';
+            else if (this.value > 0.1) icon.textContent = '🔉';
             else icon.textContent = '🔈';
-            // Сохраняем в localStorage
-            localStorage.setItem('player_volume', vol);
         });
 
-        // Восстанавливаем громкость
-        const savedVolume = localStorage.getItem('player_volume');
-        if (savedVolume !== null) {
-            volumeSlider.value = savedVolume;
-        }
+        // Прогресс (ручной)
+        progressSlider.addEventListener('input', function() {
+            if (audio.duration) {
+                const time = (this.value / 100) * audio.duration;
+                audio.currentTime = time;
+            }
+        });
 
-        // Обработчики кнопок
+        // События окончания трека → следующий
+        audio.addEventListener('ended', nextTrack);
+
+        // Кнопки
         playBtn.addEventListener('click', togglePlay);
         nextBtn.addEventListener('click', nextTrack);
         prevBtn.addEventListener('click', prevTrack);
 
-        // Автоматически загружаем первый трек
+        // Загружаем первый трек
         if (playlist.length > 0) {
             loadTrack(0);
-            // Ставим иконку play
             playBtn.textContent = '▶️';
             isPlaying = false;
         }
 
-        // Останавливаем музыку при закрытии приложения
-        window.addEventListener('beforeunload', () => {
-            iframe.src = '';
-            tg.close();
-        });
+        // Сохраняем громкость
+        const savedVolume = localStorage.getItem('player_volume');
+        if (savedVolume !== null) {
+            volumeSlider.value = savedVolume;
+            audio.volume = savedVolume;
+        }
 
-        // ============================================
-        // 5. Поддержка (отправка сообщений)
-        // ============================================
+        // === Поддержка ===
         function sendSupportMessage(text) {
             const statusEl = document.getElementById('supportStatus');
             if (statusEl) {
                 statusEl.textContent = '⏳ Отправка...';
                 statusEl.className = 'support-status';
             }
-
             const data = {
                 type: 'support',
                 user_id: userId,
@@ -690,33 +635,23 @@
                 text: text,
                 is_admin: isAdmin,
             };
-
             try {
                 tg.sendData(JSON.stringify(data));
                 if (statusEl) {
-                    statusEl.textContent = '✅ Сообщение отправлено! Администратор ответит в ближайшее время.';
+                    statusEl.textContent = '✅ Сообщение отправлено!';
                     statusEl.className = 'support-status success';
                 }
             } catch (e) {
-                console.error('Ошибка отправки:', e);
                 if (statusEl) {
-                    statusEl.textContent = '❌ Ошибка отправки. Попробуйте позже.';
+                    statusEl.textContent = '❌ Ошибка отправки.';
                     statusEl.className = 'support-status error';
                 }
             }
         }
 
-        // ============================================
-        // 6. Контент вкладок
-        // ============================================
+        // === Контент вкладок ===
         const contentMap = {
-            about: `
-                <p>
-                    🤖 Бот создан <strong>@whyyhe</strong>.
-                    <br><br>
-                    Управление сообществом, статистика, поддержка.
-                </p>
-            `,
+            about: `<p>🤖 Бот создан <strong>@whyyhe</strong>.<br><br>Управление сообществом, статистика, поддержка.</p>`,
             bio: `
                 <div class="social-links">
                     <a href="https://t.me/whyyhe" target="_blank">📩 Telegram <span class="label">личный</span></a>
@@ -728,26 +663,11 @@
             `,
             profile: `
                 <div style="margin-top: 4px;">
-                    <div class="stat-item">
-                        <span class="stat-label">👤 Имя</span>
-                        <span class="stat-value">${userName}</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">🆔 ID</span>
-                        <span class="stat-value">${userId}</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">📛 Юзернейм</span>
-                        <span class="stat-value">@${userUsername}</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">📅 Дата регистрации</span>
-                        <span class="stat-value">${new Date().toLocaleDateString()}</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">📊 Статус</span>
-                        <span class="stat-value">${isAdmin ? '👑 Администратор' : 'Пользователь'}</span>
-                    </div>
+                    <div class="stat-item"><span class="stat-label">👤 Имя</span><span class="stat-value">${userName}</span></div>
+                    <div class="stat-item"><span class="stat-label">🆔 ID</span><span class="stat-value">${userId}</span></div>
+                    <div class="stat-item"><span class="stat-label">📛 Юзернейм</span><span class="stat-value">@${userUsername}</span></div>
+                    <div class="stat-item"><span class="stat-label">📅 Дата</span><span class="stat-value">${new Date().toLocaleDateString()}</span></div>
+                    <div class="stat-item"><span class="stat-label">📊 Статус</span><span class="stat-value">${isAdmin ? '👑 Администратор' : 'Пользователь'}</span></div>
                 </div>
             `,
             support: `
@@ -759,24 +679,16 @@
             `
         };
 
-        // ============================================
-        // 7. Переключение вкладок
-        // ============================================
         function switchTab(tab) {
-            const content = contentMap[tab] || '<p>Раздел в разработке</p>';
-            contentEl.innerHTML = content;
-
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.tab === tab);
-            });
-
+            document.getElementById('contentArea').innerHTML = contentMap[tab] || '<p>Раздел в разработке</p>';
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
             if (tab === 'support') {
                 const sendBtn = document.getElementById('supportSendBtn');
                 const textarea = document.getElementById('supportText');
                 if (sendBtn && textarea) {
                     sendBtn.addEventListener('click', function() {
                         const text = textarea.value.trim();
-                        if (text.length === 0) {
+                        if (!text) {
                             const status = document.getElementById('supportStatus');
                             if (status) {
                                 status.textContent = '❌ Напишите сообщение!';
@@ -796,13 +708,14 @@
                 switchTab(this.dataset.tab);
             });
         });
-
-        // Открываем вкладку "О боте"
         switchTab('about');
 
-        console.log('✅ Мини-приложение с плеером и плейлистом загружено!');
-        console.log('👤 Пользователь:', user);
-        console.log('👑 Админ:', isAdmin);
+        window.addEventListener('beforeunload', () => {
+            audio.pause();
+            tg.close();
+        });
+
+        console.log('✅ Плеер без рекламы и с MP3 загружен!');
         console.log('🎵 Плейлист:', playlist);
     </script>
 </body>
